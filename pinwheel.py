@@ -19,8 +19,9 @@ for row in rows:
     if target:
         target = target[0]
 
-print(''.join(target.strings))
+value =  ''.join(target.strings).strip()
+myobj = {'key' : int(value)}
+print(myobj)
 
 
 # document.querySelector("#picklistContentPane > div.picklistTable > table > tbody > tr:nth-child(2) > td.EndCellSpacer")
-THis is  another change
