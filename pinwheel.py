@@ -13,15 +13,17 @@ soup = BeautifulSoup(html, 'html.parser')
 table = soup.find('table', attrs={"class": "picklist-dataTable"})
 rows = table.find_all('tr')
 # print(rows)
-
+data = []
 for row in rows:
-    target = row.find_all('td','EndCellSpacer')
-    if target:
-        target = target[0]
+    target = row.find_all('td', 'EndCellSpacer')
+    target = [ele.text.strip() for ele in target]
+    data.append([ele for ele in target if ele])
 
-value =  ''.join(target.strings).strip()
-myobj = {'key' : int(value)}
-print(myobj)
+print(data)
+
+# value =  ''.join(target.strings).strip()
+# myobj = {'min_year' : int(value)}
+# print(myobj)
 
 
 # document.querySelector("#picklistContentPane > div.picklistTable > table > tbody > tr:nth-child(2) > td.EndCellSpacer")
