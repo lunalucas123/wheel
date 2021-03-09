@@ -1,110 +1,235 @@
 import requests
+import bs4
 from bs4 import BeautifulSoup
+from pandas import DataFrame
 import pandas as pd
 import json
-import re
+import csv
+
+# user_input = input("Enter form : ").lower()
+# user_input = user_input.replace(' ','+')
+# fixed_form = user_input[0].upper() + user_input[1:]
+
+# url = f'https://apps.irs.gov/app/picklist/list/priorFormPublication.html?indexOfFirstRow=0&sortColumn=sortOrder&value={fixed_form}&criteria=formNumber&resultsPerPage=25&isDescending=false'
+
+# # search_field = soup.find_all('table', {"class": 'searchFieldsTable'})
+# # field_tr = soup.find_all('th', {"class": "NumResultsDisplayed"})
+# response = requests.get(url)
+# html = response.text
+# soup = BeautifulSoup(html, 'html.parser')
+# table = soup.find('table', attrs={"class": "picklist-dataTable"})
+# first_page_rows = table.find_all('tr')
+# first_page_rows_len = len(first_page_rows)
+# # print(first_page_rows)
+
+# for x in range(first_page_rows_len):
+#     form_number = first_page_rows[x].find_all('td', 'LeftCellSpacer')
+#     for e in form_number: 
+#         print(e.text.strip())
+
+# for x in range(first_page_rows_len):
+#    title = first_page_rows[x].find_all('td', 'MiddleCellSpacer')
+#    for td in title:
+#         stripped_title = td.text.strip()
+#         print(stripped_title)
+
+# for x in range(first_page_rows_len):
+#     year = first_page_rows[x].find_all('td', 'EndCellSpacer')
+#     for td in year:
+#         stripped_year = td.text.strip()
+#         print(stripped_year)
+
+
+
+
+
+# website = f'https://apps.irs.gov/app/picklist/list/priorFormPublication.html?indexOfFirstRow={index}&sortColumn=sortOrder&value={fixed_form}&criteria=formNumber&resultsPerPage=25&isDescending=false'
 
 user_input = input("Enter form : ").lower()
 user_input = user_input.replace(' ','+')
 fixed_form = user_input[0].upper() + user_input[1:]
+# index = 25 
 
+def open_pages(user_input, index):
+    index = index
+    user_input = user_input
 
-# print(fixed_form)
+    url = f'https://apps.irs.gov/app/picklist/list/priorFormPublication.html?indexOfFirstRow={index}&sortColumn=sortOrder&value={fixed_form}&criteria=formNumber&resultsPerPage=25&isDescending=false'
 
-url = f"https://apps.irs.gov/app/picklist/list/priorFormPublication.html?value={fixed_form}&criteria=formNumber&submitSearch=Find"
+    response = requests.get(url)
+    html = response.text
+    soup = BeautifulSoup(html, 'html.parser')
+    table = soup.find('table', attrs={"class": "picklist-dataTable"})
+    first_page_rows = table.find_all('tr')
+    first_page_rows_len = len(first_page_rows)
+# print(first_page_rows)
 
-response = requests.get(url)
-html = response.text
+    for x in range(first_page_rows_len):
+        form_number = first_page_rows[x].find_all('td', 'LeftCellSpacer')
+        for e in form_number: 
+            print(e.text.strip())
 
-# soup = BeautifulSoup(response.content,'lxml')
-# table = soup.find_all('table')[3] 
-# df = pd.read_html(str(table))
-# json = df[0].to_json(orient='records')
+    for x in range(first_page_rows_len):
+        title = first_page_rows[x].find_all('td', 'MiddleCellSpacer')
+        for td in title:
+                stripped_title = td.text.strip()
+                print(stripped_title)
 
-soup = BeautifulSoup(html, 'html.parser')
-table = soup.find('table', attrs={"class": "picklist-dataTable"})
-rows = table.find_all('tr')
-outcome = []
-# print(rows)
-
-for row in rows:
-    target_column_one = row.find_all('td', 'LeftCellSpacer')
-    target_column_two = row.find_all('td', 'MiddleCellSpacer')
-    target_column_three = row.find_all('td', 'EndCellSpacer')
-    # print(target_column[0].find('a'))
-    if target_column_one:
-        forms = target_column_one[0].find('a')
-        
-        #<a href="https://www.irs.gov/pub/irs-prior/fw2--2021.pdf">Form W-2</a>
-        # print(link)
-        for e in forms.find_all() : 
-            e.decompose()
-        form = forms.text 
-        # print(type(form))
-
-        for td in target_column_two:
-            stripped_title = td.text.strip()
-
-        for td in target_column_three:
+    for x in range(first_page_rows_len):
+        year = first_page_rows[x].find_all('td', 'EndCellSpacer')
+        for td in year:
             stripped_year = td.text.strip()
+            print(stripped_year)
+
+
+open_pages(fixed_form, 25)
+
+
+
+
+
+# response2 = requests.get(url2)
+# html2 = response2.text
+
+# soup2 = BeautifulSoup(html2, 'html.parser') 
+# field_tr2 = soup2.find_all('th', {"class": "NumResultsDisplayed"})
+# table2 = soup2.find('table', attrs={"class": "picklist-dataTable"})  
+
+# second_page_rows = table2.find_all('tr')
+
+# print(first_page_rows)
+# print(second_page_rows)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# for x in range(first_page_rows_len):
+#     form_number = first_page_rows[x].find_all('td', 'LeftCellSpacer')
+#     for e in form_number: 
+#         print(e.text.strip())
+
+# for x in range(first_page_rows_len):
+#    title = first_page_rows[x].find_all('td', 'MiddleCellSpacer')
+#    for td in title:
+#         stripped_title = td.text.strip()
+#         print(stripped_title)
+
+# for x in range(first_page_rows_len):
+#     year = first_page_rows[x].find_all('td', 'EndCellSpacer')
+#     for td in year:
+#         stripped_year = td.text.strip()
+#         print(stripped_year)
+
+with open('IRS.csv', mode='w') as csv_file:
+   fieldnames = ['form_number', 'title', 'year']
+   writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+   writer.writeheader()
+
+
+#Creating an empty lists of variables
+irs_form_number= []
+irs_title = []
+irs_year = []
+
+#Defining the irs function
+
+def opencodezscraping():
+    irs_year = []
+    next_page = webpage + str(page_number)
+    response= requests.get(str(next_page))
+    soup = BeautifulSoup(html, 'html.parser')
+    soup_form= soup.first_page_rows.find_all('td', 'LeftCellSpacer')
+    soup_title= soup.first_page_rows.find_all('td', 'MiddleCellSpacer')
+    soup_year= soup.first_page_rows.find_all('td', 'EndCellSpacer')
+    
+
+    for x in range(len(soup_title)):
+        irs_form_number.append(soup_form[x].text.strip())
+        irs_title.append(soup_title[x].p.text.strip()) 
+        irs_year.append(soup_year[x].text.strip())
+        
+
+
+              
+    # if page_number < 25:
+    #     page_number = page_number + 25
+    #     opencodezscraping(webpage, page_number)
+
+    # opencodezscraping('https://www.opencodez.com/page/', 0)
+
+
+
+
+
+# for tr in rows:
+#     target_column_one = tr.find_all('td', 'LeftCellSpacer')
+#     target_column_two = tr.find_all('td', 'MiddleCellSpacer')
+#     target_column_three = tr.find_all('td', 'EndCellSpacer')
+#     # print(target_column[0].find('a'))
+#     if target_column_one:
+#         forms = target_column_one[0].find('a')
+        
+
+#         
+#         for e in forms.find_all() : 
+#             e.decompose()
+#         form = forms.text 
+#         # print(type(form))
+
+#         for td in target_column_two:
+#             stripped_title = td.text.strip()
+
+#         for td in target_column_three:
+#             stripped_year = td.text.strip()
            
-            outcome.append({'form_number': str(form),
-                   'title': str(stripped_title),
-                   'year' : int(stripped_year)
-                  })
+#             outcome.append({'form_number': str(form),
+#                    'title': str(stripped_title),
+#                    'year' : int(stripped_year)
+#                   })
 
 
 
 
 
 
-        content_url = json.dumps(outcome)
+#         content_url = json.dumps(outcome)
 
-print(content_url)
+# print(content_url)
  
         
         
     
-    # if target_column_two:
-    #     forms = target_column_two[0].find('a')
-        # href = forms['href']
-        # print(href)
-        # print(link)
-        # print(type(link))
-        # https://www.irs.gov/pub/irs-prior/fw2p--1972.pdf
-        
-        # idx_pdf = href.index('.pdf')
-        # Year = href[39:idx_pdf]
-        # print(Year)
-        # # if code == s :
+   
+# https://apps.irs.gov/app/picklist/list/priorFormPublication.html?indexOfFirstRow=0&sortColumn=sortOrder&value=form+w-2&criteria=formNumber&resultsPerPage=200&isDescending=false
 
+# https://apps.irs.gov/app/picklist/list/priorFormPublication.html?indexOfFirstRow=200&sortColumn=sortOrder&value=form+w-2&criteria=formNumber&resultsPerPage=200&isDescending=false
 
-        # # print((type(code)))
-        
-    
-    # format_Number = row.find_all('td', 'EndCellSpacer')
-    # years = [ele.text.strip() for ele in years]
-
-
-    # titles = row.find_all('td', 'MiddleCellSpacer')
-    # titles = [ele.text.strip() for ele in titles]
-
-    # products = row.find_all('td', 'LeftCellSpacer')
-    # products = [ele.text.strip() for ele in products]
-
-
-    # data_years.append([ele for ele in years if ele])
-    # data_title.append([ele for ele in titles if ele])
-    # data_product.append([ele for ele in products if ele])
-
-
-#LeftCellSpacer
-# print(data_years)
-# print(data_title)
-# print(data_product)
-
-# value =  ''.join(target.strings).strip()
-# myobj = {'min_year' : int(value)}
-# print(myobj)
-
-
+# <a href="https://apps.irs.gov/app/picklist/list/priorFormPublication.html?indexOfFirstRow=1225&amp;sortColumn=sortOrder&amp;value=form+1040&amp;criteria=formNumber&amp;resultsPerPage=25&amp;isDescending=false">« Previous</a>
