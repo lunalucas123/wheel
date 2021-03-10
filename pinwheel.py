@@ -45,44 +45,68 @@ import csv
 
 # website = f'https://apps.irs.gov/app/picklist/list/priorFormPublication.html?indexOfFirstRow={index}&sortColumn=sortOrder&value={fixed_form}&criteria=formNumber&resultsPerPage=25&isDescending=false'
 
+
+# index = 25 
 user_input = input("Enter form : ").lower()
 user_input = user_input.replace(' ','+')
 fixed_form = user_input[0].upper() + user_input[1:]
-# index = 25 
 
-def open_pages(user_input, index):
-    index = index
-    user_input = user_input
+with open('IRS.csv', mode='w') as csv_file:
+   fieldnames = ['form_number', 'title', 'year']
+   writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+   writer.writeheader()
 
+list_form_number = []
+list_title = []
+list_year = []
+
+def open_pages(index):
+    
     url = f'https://apps.irs.gov/app/picklist/list/priorFormPublication.html?indexOfFirstRow={index}&sortColumn=sortOrder&value={fixed_form}&criteria=formNumber&resultsPerPage=25&isDescending=false'
 
     response = requests.get(url)
     html = response.text
     soup = BeautifulSoup(html, 'html.parser')
+   
+    results_table = soup.find('table', attrs={"class": "searchFieldsTable"})
+    results_page = results_table.find_all('tr')
+    # results_number = results_page.find('tr', attrs={"class": "ShowByColumn"} )
+    for r in range(len(results_page)):
+        result_number = results_page[r].find_all('th', 'ShowByColumn')
+
+        for e in result_number: 
+            print(e.text.strip())
+
     table = soup.find('table', attrs={"class": "picklist-dataTable"})
     first_page_rows = table.find_all('tr')
     first_page_rows_len = len(first_page_rows)
-# print(first_page_rows)
+    # print(first_page_rows)
+    
 
     for x in range(first_page_rows_len):
         form_number = first_page_rows[x].find_all('td', 'LeftCellSpacer')
-        for e in form_number: 
-            print(e.text.strip())
-
-    for x in range(first_page_rows_len):
         title = first_page_rows[x].find_all('td', 'MiddleCellSpacer')
-        for td in title:
-                stripped_title = td.text.strip()
-                print(stripped_title)
-
-    for x in range(first_page_rows_len):
         year = first_page_rows[x].find_all('td', 'EndCellSpacer')
-        for td in year:
-            stripped_year = td.text.strip()
-            print(stripped_year)
 
 
-open_pages(fixed_form, 25)
+        for e in form_number: 
+            list_form_number.append(e.text.strip())
+        for e in title: 
+            list_title.append(e.text.strip())
+        for e in year: 
+            list_year.append(e.text.strip())
+
+    # print(list_form_number,list_title, list_year)
+    data = { 'Form_number': list_form_number,'Title':list_title, 'year':list_year}
+    df = DataFrame(data, columns = ['Form_number','Title','year'])
+    df.to_csv(r'/Users/geovannymolina/Desktop/IRS.csv')
+    return open_pages(index + 25)
+
+open_pages(0)
+
+
+
+
 
 
 
@@ -148,33 +172,33 @@ open_pages(fixed_form, 25)
 #         stripped_year = td.text.strip()
 #         print(stripped_year)
 
-with open('IRS.csv', mode='w') as csv_file:
-   fieldnames = ['form_number', 'title', 'year']
-   writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-   writer.writeheader()
+# with open('IRS.csv', mode='w') as csv_file:
+#    fieldnames = ['form_number', 'title', 'year']
+#    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+#    writer.writeheader()
 
 
 #Creating an empty lists of variables
-irs_form_number= []
-irs_title = []
-irs_year = []
+# irs_form_number= []
+# irs_title = []
+# irs_year = []
 
-#Defining the irs function
+# #Defining the irs function
 
-def opencodezscraping():
-    irs_year = []
-    next_page = webpage + str(page_number)
-    response= requests.get(str(next_page))
-    soup = BeautifulSoup(html, 'html.parser')
-    soup_form= soup.first_page_rows.find_all('td', 'LeftCellSpacer')
-    soup_title= soup.first_page_rows.find_all('td', 'MiddleCellSpacer')
-    soup_year= soup.first_page_rows.find_all('td', 'EndCellSpacer')
+# def opencodezscraping():
+#     irs_year = []
+#     next_page = webpage + str(page_number)
+#     response= requests.get(str(next_page))
+#     soup = BeautifulSoup(html, 'html.parser')
+#     soup_form= soup.first_page_rows.find_all('td', 'LeftCellSpacer')
+#     soup_title= soup.first_page_rows.find_all('td', 'MiddleCellSpacer')
+#     soup_year= soup.first_page_rows.find_all('td', 'EndCellSpacer')
     
 
-    for x in range(len(soup_title)):
-        irs_form_number.append(soup_form[x].text.strip())
-        irs_title.append(soup_title[x].p.text.strip()) 
-        irs_year.append(soup_year[x].text.strip())
+#     for x in range(len(soup_title)):
+#         irs_form_number.append(soup_form[x].text.strip())
+#         irs_title.append(soup_title[x].p.text.strip()) 
+#         irs_year.append(soup_year[x].text.strip())
         
 
 
