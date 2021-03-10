@@ -22,6 +22,7 @@ list_form_number = []
 list_title = []
 list_year = []
 page_max_sliced = ''
+list_of_json = []
 
 
 def open_pages(index):
@@ -62,24 +63,21 @@ def open_pages(index):
         year = first_page_rows[x].find_all('td', 'EndCellSpacer')
 
         new_form = fixed_form.replace('+',' ')
-        form_result_list = []
-        title_result_list = []
-        year_result_list = []
+        # form_result_list = []
+        # title_result_list = []
+        # year_result_list = []
         for f in form_number: 
             list_form_number.append(f.text.strip())
             for f in list_form_number:
                 obj_form_number = {"form_number" : f }
-            
-            y = json.dumps(obj_form_number)
-            # print(y)
 
 
         for t in title: 
             list_title.append(t.text.strip())
             for t in list_title:
-                obj_form_number['title'] = t
+                obj_form_number['form_title'] = t
             
-            y = json.dumps(obj_form_number)
+            # y = json.dumps(obj_form_number)
 
             # print(y)
 
@@ -87,13 +85,12 @@ def open_pages(index):
             list_year.append(y.text.strip())
             for y in list_year:
                 obj_form_number['year'] = y
-            
-            y = json.dumps(obj_form_number)
 
-            # print(y)
-    
+    list_of_json.append(obj_form_number)
     with open('data.txt', 'w') as outfile:
-        json.dump(y, outfile)        
+        json.dump(list_of_json, outfile)
+    # print(list_of_json)
+    
         
     
     # print(list_form_number,list_title, list_year)
@@ -113,6 +110,7 @@ def open_pages(index):
 open_pages(0)
 
 
-
+# with open('person.txt', 'w') as json_file:
+#         json.dump(obj_form_number, json_file)    
 
 
