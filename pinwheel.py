@@ -84,12 +84,19 @@ def open_pages(index):
         for y in year: 
             list_year.append(y.text.strip())
             for y in list_year:
-                obj_form_number['year'] = y
+                obj_form_number['year'] = int(y)
+
+    
+
 
     list_of_json.append(obj_form_number)
-    with open('data.txt', 'w') as outfile:
+    with open('data.json', 'w') as outfile:
         json.dump(list_of_json, outfile)
     # print(list_of_json)
+  
+
+    
+    
     
         
     
@@ -108,6 +115,28 @@ def open_pages(index):
             return open_pages(index)
 
 open_pages(0)
+
+
+target_form = []
+target_title = []
+target_year = []
+target_obj = {}
+year = 0
+with open('data.json') as data_file:    
+            data = json.load(data_file)
+            for form in data:
+                year = form['year']
+                # print(year)
+                if form['form_number'] == "Form 1040" :
+                    target_form.append(form['form_number'])
+                    target_title.append(form['form_title'])
+                    target_year.append(form['year'])
+
+            target_obj['form_number'] = target_form[0]
+            target_obj['form_title'] = target_title[0]
+            target_obj['min_year'] = target_year[-1]
+            target_obj['max_year'] = target_year[0]
+            print(target_obj)
 
 
 # with open('person.txt', 'w') as json_file:
