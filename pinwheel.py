@@ -59,11 +59,16 @@ with open('IRS.csv', mode='w') as csv_file:
 list_form_number = []
 list_title = []
 list_year = []
+page_max_sliced = ''
+
 
 def open_pages(index):
     
+   
+    
+    
     url = f'https://apps.irs.gov/app/picklist/list/priorFormPublication.html?indexOfFirstRow={index}&sortColumn=sortOrder&value={fixed_form}&criteria=formNumber&resultsPerPage=25&isDescending=false'
-
+    
     response = requests.get(url)
     html = response.text
     soup = BeautifulSoup(html, 'html.parser')
@@ -75,8 +80,19 @@ def open_pages(index):
         result_number = results_page[r].find_all('th', 'ShowByColumn')
 
         for e in result_number: 
-            number_sliced = e.text.strip()
-            print(number_sliced[-10:])
+            page_max_num = e.text.strip()
+            page_max_sliced = page_max_num[-12:-5].strip()
+            page_max_sliced = page_max_sliced.replace(',', '')
+            page_max_sliced = int(page_max_sliced)        
+    # print(page_max_sliced)
+
+    # while page_max_sliced > index:
+    #     index = index + 25
+        
+    #     if index >= page_max_sliced:
+    #         break
+    #     else:
+    #         continue
     table = soup.find('table', attrs={"class": "picklist-dataTable"})
     first_page_rows = table.find_all('tr')
     first_page_rows_len = len(first_page_rows)
@@ -95,12 +111,23 @@ def open_pages(index):
             list_title.append(e.text.strip())
         for e in year: 
             list_year.append(e.text.strip())
-
+        
+    
     # print(list_form_number,list_title, list_year)
+    
     data = { 'Form_number': list_form_number,'Title':list_title, 'year':list_year}
     df = DataFrame(data, columns = ['Form_number','Title','year'])
     df.to_csv(r'/Users/geovannymolina/Desktop/IRS.csv')
-    return open_pages(index + 25)
+    index = index + 25
+
+    while index < page_max_sliced:
+      
+        if index == page_max_sliced:
+            break
+        else:
+            return open_pages(index)
+
+    
 
 open_pages(0)
 
