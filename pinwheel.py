@@ -75,8 +75,8 @@ def open_pages(index):
         result_number = results_page[r].find_all('th', 'ShowByColumn')
 
         for e in result_number: 
-            print(e.text.strip())
-
+            number_sliced = e.text.strip()
+            print(number_sliced[-10:])
     table = soup.find('table', attrs={"class": "picklist-dataTable"})
     first_page_rows = table.find_all('tr')
     first_page_rows_len = len(first_page_rows)
