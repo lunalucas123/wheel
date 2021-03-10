@@ -5,12 +5,14 @@ from pandas import DataFrame
 import pandas as pd
 import json
 import csv
+import re
 # index = 25 
 user_input = input("Enter form : ").lower()
 user_input = user_input.replace(' ','+')
 fixed_form = user_input[0].upper() + user_input[1:]
+user_input = fixed_form.replace('+',' ')
 
-# print(fixed_form)
+
 
 # with open('IRS.csv', mode='w') as csv_file:
 #    fieldnames = ['form_number', 'title', 'year']
@@ -21,8 +23,9 @@ obj_form_number = {}
 list_form_number = []
 list_title = []
 list_year = []
-page_max_sliced = ''
+page_max_sliced = 0
 list_of_json = []
+
 
 
 def open_pages(index):
@@ -32,7 +35,7 @@ def open_pages(index):
     response = requests.get(url)
     html = response.text
     soup = BeautifulSoup(html, 'html.parser')
-   
+    
     results_table = soup.find('table', attrs={"class": "searchFieldsTable"})
     results_page = results_table.find_all('tr')
     # print(results_page)
@@ -43,9 +46,18 @@ def open_pages(index):
 
         for e in result_number: 
             page_max_num = e.text.strip()
-            page_max_sliced = page_max_num[-12:-5].strip()
-            page_max_sliced = page_max_sliced.replace(',', '')
-            page_max_sliced = int(page_max_sliced)        
+            # print(page_max_num)
+           
+            
+            page_max_sliced = page_max_num[-25:-5].strip()
+            # print(page_max_sliced)
+            # page_max_sliced = page_max_sliced.replace(',', '')
+            # print(type(int(page_max_sliced)))
+            res = int(''.join([n for n in page_max_sliced if n.isdigit()]))
+            # res = list(map(int, temp)) 
+            
+            
+                 
     # print(page_max_sliced)
 
     table = soup.find('table', attrs={"class": "picklist-dataTable"})
@@ -62,7 +74,7 @@ def open_pages(index):
         # print(title)
         year = first_page_rows[x].find_all('td', 'EndCellSpacer')
 
-        new_form = fixed_form.replace('+',' ')
+        # new_form = fixed_form.replace('+',' ')
         # form_result_list = []
         # title_result_list = []
         # year_result_list = []
@@ -94,11 +106,6 @@ def open_pages(index):
         json.dump(list_of_json, outfile)
     # print(list_of_json)
   
-
-    
-    
-    
-        
     
     # print(list_form_number,list_title, list_year)
     
@@ -106,40 +113,64 @@ def open_pages(index):
     # df = DataFrame(data, columns = ['Form_number','Title','year'])
     # df.to_csv(r'/Users/geovannymolina/Desktop/IRS.csv')
     index = index + 25
-
-    while index < page_max_sliced:
+    
+    # print(index, type(res))
+    while index < res:
       
         if index == page_max_sliced:
             break
         else:
             return open_pages(index)
 
-open_pages(0)
 
+
+
+open_pages(0)
 
 target_form = []
 target_title = []
 target_year = []
 target_obj = {}
 year = 0
+
 with open('data.json') as data_file:    
-            data = json.load(data_file)
-            for form in data:
-                year = form['year']
-                # print(year)
-                if form['form_number'] == "Form 1040" :
-                    target_form.append(form['form_number'])
-                    target_title.append(form['form_title'])
-                    target_year.append(form['year'])
+        data = json.load(data_file)
+        for form in data:
+            
+            print(form['form_number'].upper(), user_input.upper())
+            
+            if form['form_number'].upper() == user_input.upper():
+                target_form.append(form['form_number'])
+                target_title.append(form['form_title'])
+                target_year.append(form['year'])
 
-            target_obj['form_number'] = target_form[0]
-            target_obj['form_title'] = target_title[0]
-            target_obj['min_year'] = target_year[-1]
-            target_obj['max_year'] = target_year[0]
-            print(target_obj)
+        target_obj['form_number'] = target_form[0]
+        target_obj['form_title'] = target_title[0]
+        target_obj['min_year'] = target_year[-1]
+        target_obj['max_year'] = target_year[0]
+        print(target_obj)
+# target_form = []
+# target_title = []
+# target_year = []
+# target_obj = {}
+# year = 0
 
+# with open('data.json') as data_file:    
+#         data = json.load(data_file)
+#         for form in data:
+#             year = form['year']
+#             print(user_input)
+#             if form['form_number'] == 'Form W-2':
+#                 target_form.append(form['form_number'])
+#                 target_title.append(form['form_title'])
+#                 target_year.append(form['year'])
 
-# with open('person.txt', 'w') as json_file:
-#         json.dump(obj_form_number, json_file)    
+#         target_obj['form_number'] = target_form[0]
+#         target_obj['form_title'] = target_title[0]
+#         target_obj['min_year'] = target_year[-1]
+#         target_obj['max_year'] = target_year[0]
+#         print(target_obj)
+
+  
 
 

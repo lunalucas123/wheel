@@ -1,10 +1,5 @@
-import requests
-import bs4
-from bs4 import BeautifulSoup
-from pandas import DataFrame
-import pandas as pd
 import json
-import csv
+
 
 target_form = []
 target_title = []
@@ -17,7 +12,7 @@ with open('data.json') as data_file:
         for form in data:
             year = form['year']
             # print(year)
-            if form['form_number'] == "Form 1040" :
+            if form['form_number'] == "Form W-2" :
                 target_form.append(form['form_number'])
                 target_title.append(form['form_title'])
                 target_year.append(form['year'])
@@ -27,4 +22,4 @@ with open('data.json') as data_file:
         target_obj['min_year'] = target_year[-1]
         target_obj['max_year'] = target_year[0]
         print(target_obj)
-        # print(target_list, target_title, target_year)
+        
