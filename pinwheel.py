@@ -14,10 +14,6 @@ user_input = fixed_form.replace('+',' ')
 
 
 
-# with open('IRS.csv', mode='w') as csv_file:
-#    fieldnames = ['form_number', 'title', 'year']
-#    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-#    writer.writeheader()
 
 obj_form_number = {}
 list_form_number = []
@@ -25,9 +21,6 @@ list_title = []
 list_year = []
 page_max_sliced = 0
 list_of_json = []
-
-
-
 def open_pages(index):
     
     url = f'https://apps.irs.gov/app/picklist/list/priorFormPublication.html?indexOfFirstRow={index}&sortColumn=sortOrder&value={fixed_form}&criteria=formNumber&resultsPerPage=25&isDescending=false'
@@ -48,13 +41,10 @@ def open_pages(index):
             page_max_num = e.text.strip()
             # print(page_max_num)
            
+            page_max_sliced = page_max_num[-13:-5].strip()
             
-            page_max_sliced = page_max_num[-25:-5].strip()
-            # print(page_max_sliced)
-            # page_max_sliced = page_max_sliced.replace(',', '')
-            # print(type(int(page_max_sliced)))
             res = int(''.join([n for n in page_max_sliced if n.isdigit()]))
-            # res = list(map(int, temp)) 
+            # print(res)
             
             
                  
@@ -137,7 +127,7 @@ with open('data.json') as data_file:
         data = json.load(data_file)
         for form in data:
             
-            print(form['form_number'].upper(), user_input.upper())
+            # print(form['form_number'].upper(), user_input.upper())
             
             if form['form_number'].upper() == user_input.upper():
                 target_form.append(form['form_number'])
@@ -149,28 +139,6 @@ with open('data.json') as data_file:
         target_obj['min_year'] = target_year[-1]
         target_obj['max_year'] = target_year[0]
         print(target_obj)
-# target_form = []
-# target_title = []
-# target_year = []
-# target_obj = {}
-# year = 0
 
-# with open('data.json') as data_file:    
-#         data = json.load(data_file)
-#         for form in data:
-#             year = form['year']
-#             print(user_input)
-#             if form['form_number'] == 'Form W-2':
-#                 target_form.append(form['form_number'])
-#                 target_title.append(form['form_title'])
-#                 target_year.append(form['year'])
-
-#         target_obj['form_number'] = target_form[0]
-#         target_obj['form_title'] = target_title[0]
-#         target_obj['min_year'] = target_year[-1]
-#         target_obj['max_year'] = target_year[0]
-#         print(target_obj)
-
-  
 
 
