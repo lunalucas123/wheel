@@ -8,7 +8,7 @@ list_of_input = []
 def user_input_count():
     count = int(input("Please enter the number of forms you want to search for :  "))
     while count > 0:
-        list_of_input.append(input("Enter form : ").upper())
+        list_of_input.append(input("Enter one form at a time : ").upper())
         count = count - 1
 
     with open('data.json') as data_file:    
@@ -21,10 +21,6 @@ def user_input_count():
                 # print(form['form_number'])
 user_input_count()  
 
-# fixed_list = []
-# target_form = []
-# target_title = []
-# target_year = []
 # target_obj = {  "form_number": "",
 #                 "form_title": "No record",
 #                 "min_year": "No min year",
