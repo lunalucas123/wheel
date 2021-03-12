@@ -4,22 +4,70 @@ import json
 list_of_input = []
 # user_input = input("Enter form : ").lower()
 # print(type(user_input))
+target_form = []
+geo_list = []
+dic = {}
+count = int(input("Please enter the number of forms you want to search for :  "))
 
-def user_input_count():
-    count = int(input("Please enter the number of forms you want to search for :  "))
+
+
+def user_input_count(count):
+    
+    
     while count > 0:
-        list_of_input.append(input("Enter one form at a time : ").upper())
-        count = count - 1
+        # count = count - 1 
+        if count == 0:
+            break
+        else:
+            target_obj = {}
+            list_of_input.append(input("Enter form: ").upper())
+            print(list_of_input)
+            with open('data.json') as data_file:    
+                data = json.load(data_file)
+                for item in list_of_input:
+                    # for item in list_of_input:
+                        for form in data:
+                    # print(item)
+                            if form['form'] == item:
+                                target_form.append(form)
 
-    with open('data.json') as data_file:    
-        data = json.load(data_file)
-        for form in data:
-            for item in list_of_input:
-                # print(item)
-                    if form['form'] == item:
-                        print(form)
-                # print(form['form_number'])
-user_input_count()  
+                        min_form = target_form[-1]    
+                        max_form = target_form[0] 
+                        
+
+            target_obj = {"form_number": max_form['form'],
+                    "form_title": max_form['title'],
+                    "min_year": min_form['year'],
+                    "max_year": max_form['year']}
+
+
+
+            geo_list.append(target_obj)
+            list_of_input.pop()                    
+                        
+            print(geo_list)   
+            # print(target_obj.clear())
+            target_form.clear()               
+            return user_input_count(count - 1)
+
+user_input_count(count)          
+
+
+    
+        
+        
+        
+
+        # print(target_form)
+        # print(max_form)
+        # print(min_form)
+
+        # print(max_form['form'])
+        # print(max_form['title'])
+
+        # print(max_form['year'])
+        # print(min_form['year'])
+
 
 # target_obj = {  "form_number": "",
 #                 "form_title": "No record",
