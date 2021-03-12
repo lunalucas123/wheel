@@ -56,7 +56,7 @@ def open_pages(index):
             else:
                 return open_pages(index)
 
-  open_pages(0)
+open_pages(0)
 
 
 
