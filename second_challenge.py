@@ -1,21 +1,11 @@
 import json
-
 list_of_input = []
 target_form = []
 geo_list = []
 dic = {}
-# count = int(input("Please enter the number of forms you want to search for :  "))
-
-
 
 def user_input_count():
-    
-    
-    # while count > 0:
-    #     # count = count - 1 
-    #     if count == 0:
-    #         break
-    #     else:
+
         target_item = []
         list_of_input.append(input("Enter form: ").upper())
         # print(list_of_input)
@@ -33,24 +23,9 @@ def user_input_count():
                             target_item.append(form)
 
         print(target_item)   
-        # print(target_obj.clear())
-        # target_form.clear()               
-        # return user_input_count()
 
 user_input_count()          
-        #             min_form = target_form[-1]    
-        #             max_form = target_form[0] 
-                    
-
-        # target_obj = {"form_number": max_form['form'],
-        #         "form_title": max_form['title'],
-        #         "min_year": min_form['year'],
-        #         "max_year": max_form['year']}
-
-
-
-        # geo_list.append(target_obj)
-        # list_of_input.pop()                    
+               
                     
 
 

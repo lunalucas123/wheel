@@ -1,15 +1,11 @@
 import json
-
 list_of_input = []
 target_form = []
 geo_list = []
 dic = {}
 count = int(input("Please enter the number of forms you want to search for :  "))
 
-
-
 def user_input_count(count):
-    
     
     while count > 0:
         # count = count - 1 
