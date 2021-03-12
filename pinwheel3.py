@@ -19,7 +19,7 @@ def user_input_count(count):
             target_obj = {}
             list_of_input.append(input("Enter form: ").upper())
             # print(list_of_input)
-            with open('data.json') as data_file:    
+            with open('data2.json') as data_file:    
                 data = json.load(data_file)
                 for item in list_of_input:
                     # for item in list_of_input:
@@ -35,7 +35,8 @@ def user_input_count(count):
             target_obj = {"form_number": max_form['form'],
                     "form_title": max_form['title'],
                     "min_year": min_form['year'],
-                    "max_year": max_form['year']}
+                    "max_year": max_form['year'],
+                    "pdf_link": max_form['link']}
 
 
 

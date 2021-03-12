@@ -19,7 +19,7 @@ def user_input_count():
         target_item = []
         list_of_input.append(input("Enter form: ").upper())
         # print(list_of_input)
-        with open('data.json') as data_file:    
+        with open('data2.json') as data_file:    
             data = json.load(data_file)
             for item in list_of_input:
                 
@@ -32,6 +32,12 @@ def user_input_count():
                         if form['form'] == item and form['year'] == '2020':
                             target_item.append(form)
 
+        print(target_item)   
+        # print(target_obj.clear())
+        # target_form.clear()               
+        # return user_input_count()
+
+user_input_count()          
         #             min_form = target_form[-1]    
         #             max_form = target_form[0] 
                     
@@ -46,12 +52,6 @@ def user_input_count():
         # geo_list.append(target_obj)
         # list_of_input.pop()                    
                     
-        print(target_item)   
-        # print(target_obj.clear())
-        # target_form.clear()               
-        # return user_input_count()
-
-user_input_count()          
 
 
 
