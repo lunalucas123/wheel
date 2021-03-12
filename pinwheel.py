@@ -23,7 +23,7 @@ page_max_sliced = 0
 list_of_json = []
 def open_pages(index):
     
-    url = f'https://apps.irs.gov/app/picklist/list/priorFormPublication.html?indexOfFirstRow={index}&sortColumn=sortOrder&value={fixed_form}&criteria=formNumber&resultsPerPage=25&isDescending=false'
+    url = f'https://apps.irs.gov/app/picklist/list/priorFormPublication.html?indexOfFirstRow={index}&sortColumn=sortOrder&value=?&criteria=formNumber&resultsPerPage=25&isDescending=false'
     
     response = requests.get(url)
     html = response.text
@@ -120,7 +120,10 @@ open_pages(0)
 target_form = []
 target_title = []
 target_year = []
-target_obj = {}
+target_obj = {"form_number": "",
+                "form_title": "No record",
+                "min_year": "No min year",
+                "max_year": "No max year"}
 year = 0
 
 with open('data.json') as data_file:    
@@ -133,6 +136,9 @@ with open('data.json') as data_file:
                 target_form.append(form['form_number'])
                 target_title.append(form['form_title'])
                 target_year.append(form['year'])
+
+
+
 
         target_obj['form_number'] = target_form[0]
         target_obj['form_title'] = target_title[0]
