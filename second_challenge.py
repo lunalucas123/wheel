@@ -4,10 +4,13 @@ target_form = []
 geo_list = []
 dic = {}
 
+print(" Welcolme to the IRS ")
+print(" Download all PDFs available by clicking on any pdf link within the range years 2018-2020 of any searched form. \n")
+
 def user_input_count():
 
         target_item = []
-        list_of_input.append(input("Enter form: ").upper())
+        list_of_input.append(input("Enter form: \n").upper())
         # print(list_of_input)
         with open('data2.json') as data_file:    
             data = json.load(data_file)

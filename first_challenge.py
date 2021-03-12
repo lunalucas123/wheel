@@ -3,9 +3,12 @@ list_of_input = []
 target_form = []
 geo_list = []
 dic = {}
-count = int(input("Please enter the number of forms you want to search for :  "))
 
-def user_input_count(count):
+print("Welcolme to the IRS Prior Year Products Search !")
+count = int(input("How many forms would you like to search for?   "))
+
+    
+def user_input_count(count): # forms that I used and obtained the results were form 1040 & form w-2
     
     while count > 0:
         # count = count - 1 
@@ -39,12 +42,15 @@ def user_input_count(count):
             geo_list.append(target_obj)
             list_of_input.pop()                    
                         
-            print(geo_list)   
+            print(geo_list) 
+            print("Click on any link pdf to show form and download to your device")  
             # print(target_obj.clear())
             target_form.clear()               
             return user_input_count(count - 1)
 
 user_input_count(count)          
+        
+
 
 
 
